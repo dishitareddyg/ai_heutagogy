@@ -38,6 +38,15 @@ def create_plan(request):
             class_size
         )
 
+        CoursePlan.objects.create(
+        
+        num_classes=num_classes,
+        class_duration=duration,
+        class_size=class_size,
+        course_outcomes=outcomes,
+        roadmap=roadmap,
+    )
+
         return render(request, "teacher/roadmap.html", {
             "outcomes": outcomes,
             "roadmap": roadmap
