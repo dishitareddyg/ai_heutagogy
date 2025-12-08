@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+<h2>Student Progress Dashboard</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Student</th>
+        <th>Activity</th>
+        <th>Progress (%)</th>
+    </tr>
+
+    {% for p in progress %}
+    <tr>
+        <td>{{ p.student_name }}</td>
+        <td>{{ p.activity }}</td>
+        <td>{{ p.progress_percent }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

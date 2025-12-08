@@ -1,0 +1,42 @@
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roadmap</title>
+</head>
+<body>
+<h2>Generated Course Roadmap</h2>
+
+{% for cls in roadmap %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <h3>Class {{ cls.class_number }}</h3>
+        <p><b>Focus:</b> {{ cls.outcome_focus }}</p>
+
+        <p><b>Time Allocation:</b></p>
+        <ul>
+            <li>Lecture: {{ cls.time_allocation.Lecture }} min</li>
+            <li>Activity: {{ cls.time_allocation.Activity }} min</li>
+            <li>Discussion: {{ cls.time_allocation.Discussion }} min</li>
+        </ul>
+
+        <p><b>Suggested Activity:</b> {{ cls.suggested_activity }}</p>
+    </div>
+{% endfor %}
+
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generated Roadmap</title>
+</head>
+<body>
+<h2>Course Roadmap</h2>
+<pre>{{ roadmap }}</pre>
+
+<a href="/teacher/plan/">← Generate Another Plan</a>
+</body>
+</html>

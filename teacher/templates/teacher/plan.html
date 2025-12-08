@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Course Plan</title>
+</head>
+<body>
+
+<h2>Generate Course Roadmap</h2>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+    
+    {% csrf_token %}
+
+   <!----<label>Course Outcomes:</label><br>
+    <textarea name="outcomes" required></textarea><br><br>
+-->
+    <label>Enter Course Outcomes (Bloom’s Taxonomy Style):</label><br>
+    <textarea name="outcomes" placeholder="Example: 
+    1. Understand process scheduling 
+    2. Apply memory management algorithms 
+    3. Analyze deadlock handling strategies…" required></textarea><br>
+
+    
+
+    <label>Number of Classes:</label><br>
+    <input type="number" name="num_classes" required><br><br>
+
+    <label>Duration of Each Class (minutes):</label><br>
+    <input type="number" name="duration" required><br><br>
+
+    <label>Class Size:</label><br>
+    <input type="number" name="class_size" required><br><br>
+
+    <button type="submit">Generate Roadmap</button>
+</form>
+
+</body>
+</html>
+
+
+
