@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saved Course Plans</title>
+</head>
+<body>
+
+<h2>Saved Course Roadmaps</h2>
+
+{% for plan in page_obj %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <h3>{{ plan.course_name }}</h3>
+        <p><strong>Classes:</strong> {{ plan.num_classes }}</p>
+        <p><strong>Duration:</strong> {{ plan.class_duration }} minutes</p>
+        <p><strong>Created:</strong> {{ plan.created_at }}</p>
+
+        <a href="{% url 'plan-detail' plan.id %}">
+            View Full Roadmap →
+        </a>
+    </div>
+{% empty %}
+    <p>No plans generated yet.</p>
+{% endfor %}
+
+<hr>
+
+<!-- Pagination controls -->
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">← Previous</a>
+    {% endif %}
+
+    <span> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+    {% endif %}
+</div>
+
+<br>
+<a href="/teacher/plan/">← Generate New Plan</a>
+
+</body>
+</html>

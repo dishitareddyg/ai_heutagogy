@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ plan.course_name }}</title>
+</head>
+<body>
+
+<h2>{{ plan.course_name }}</h2>
+
+<p><strong>Course Outcomes:</strong></p>
+<pre>{{ plan.course_outcomes }}</pre>
+
+<p><strong>Number of Classes:</strong> {{ plan.num_classes }}</p>
+<p><strong>Class Duration:</strong> {{ plan.class_duration }} minutes</p>
+<p><strong>Class Size:</strong> {{ plan.class_size }}</p>
+
+<hr>
+
+<h3>Generated Roadmap</h3>
+<pre>{{ plan.roadmap }}</pre>
+
+<hr>
+
+<a href="{% url 'view-plans' %}">← Back to All Plans</a>
+
+</body>
+</html>
