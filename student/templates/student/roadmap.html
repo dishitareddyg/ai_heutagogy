@@ -1,0 +1,34 @@
+
+<h2>{{ roadmap.topic }}</h2>
+
+{% for stage in roadmap.stages %}
+  <h3>{{ stage.stage_title }}</h3>
+
+  <strong>Capability Outcomes:</strong>
+  <ul>
+    {% for o in stage.capability_outcomes %}
+      <li>{{ o }}</li>
+    {% endfor %}
+  </ul>
+
+  <strong>Core Checkpoints:</strong>
+  <ul>
+    {% for c in stage.checkpoints.core %}
+      <li>{{ c }}</li>
+    {% endfor %}
+  </ul>
+
+  <strong>Optional:</strong>
+  <ul>
+    {% for c in stage.checkpoints.optional %}
+      <li>{{ c }}</li>
+    {% endfor %}
+  </ul>
+
+  <strong>Reflection:</strong>
+  <ul>
+    {% for r in stage.reflection_prompts %}
+      <li>{{ r }}</li>
+    {% endfor %}
+  </ul>
+{% endfor %}

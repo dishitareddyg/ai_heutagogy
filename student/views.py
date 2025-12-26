@@ -1,26 +1,41 @@
-from django.shortcuts import render
-
-# Create your views here.
 
 from django.shortcuts import render
-from rag_pipeline.rag import get_rag_response
+from rag.generator import generate_learning_path
 
-def generate_student_roadmap(request):
+def module1_view(request):
+    response = None
+
     if request.method == "POST":
-        topic = request.POST.get("topic")
-        outcomes = request.POST.get("outcomes")
+        request.session["module1_data"] = {
+            "topic": request.POST.get("topic"),
+            "level": request.POST.get("level"),
+            "goal": request.POST.get("goal"),
+            "style": request.POST.get("style"),
+            "output": request.POST.get("output"),
+        }
 
-        query = f"Generate a learning roadmap for topic '{topic}' \
-                   with desired outcomes: {outcomes}. Include \
-                   visual learning elements and step-by-step activities."
+        response = generate_learning_path(**request.session["module1_data"])
 
-        roadmap = get_rag_response(query)
+    return render(request, "student/module1.html", {"response": response})
 
-        return render(request, "student/roadmap.html", {"roadmap": roadmap})
-    return render(request, "student/form.html")
+from rag.generator import generate_assessment
 
+def module1_assessment_view(request):
+    assessment_output = None
+    module1_data = request.session.get("module1_data")
 
+    if request.method == "POST" and module1_data:
+        assessment = request.POST.get("assessment")
 
-def learn(request):
-    return render(request, "student/learn.html")
+        assessment_output = generate_assessment(
+            topic=module1_data["topic"],
+            level=module1_data["level"],
+            goal=module1_data["goal"],
+            assessment=assessment
+        )
 
+    return render(
+        request,
+        "student/module1_assessment.html",
+        {"assessment_output": assessment_output}
+    )

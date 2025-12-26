@@ -1,0 +1,28 @@
+
+<form method="POST">
+  {% csrf_token %}
+
+  <input name="topic" placeholder="Topic" required />
+
+  <select name="goal">
+    <option>Build projects</option>
+    <option>Exam preparation</option>
+    <option>Research depth</option>
+    <option>Job readiness</option>
+  </select>
+
+  <select name="depth">
+    <option>Introductory</option>
+    <option>Intermediate</option>
+    <option>Advanced</option>
+  </select>
+
+  <input name="time" placeholder="e.g. 4 weeks, 6 hrs/week" />
+
+  <label><input type="checkbox" name="preferences" value="Reading">Reading</label>
+  <label><input type="checkbox" name="preferences" value="Watching">Watching</label>
+  <label><input type="checkbox" name="preferences" value="Building">Building</label>
+  <label><input type="checkbox" name="preferences" value="Reflecting">Reflecting</label>
+
+  <button type="submit">Co-Create Roadmap</button>
+</form>

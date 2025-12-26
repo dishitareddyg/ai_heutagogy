@@ -1,0 +1,42 @@
+<h2>Module 1: Personalized Learning</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Topic:</label><br>
+    <input type="text" name="topic" required><br><br>
+
+    <label>Your current level:</label><br>
+    <select name="level">
+        <option>Beginner</option>
+        <option>Intermediate</option>
+        <option>Advanced</option>
+    </select><br><br>
+
+    <label>Learning goal:</label><br>
+    <input type="text" name="goal"><br><br>
+
+    <label>Preferred learning style:</label><br>
+    <select name="style">
+        <option>Conceptual</option>
+        <option>Visual</option>
+        <option>Hands-on</option>
+    </select><br><br>
+
+    <label>Expected output:</label><br>
+    <select name="output">
+        <option>Explanation</option>
+        <option>Summary</option>
+        <option>Roadmap</option>
+    </select><br><br>
+
+    <button type="submit">Generate Learning Plan</button>
+</form>
+
+{% if response %}
+<hr>
+<h3>Your Personalized Learning Path</h3>
+<pre>{{ response }}</pre>
+
+<a href="{% url 'student:module1_assessment' %}">Proceed to Assessment Choice →</a>
+{% endif %}

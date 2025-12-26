@@ -1,0 +1,25 @@
+
+<h2>Choose How You Want to Be Assessed</h2>
+
+<p>
+In heutagogical learning, you decide how to demonstrate your understanding.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Preferred assessment method:</label><br>
+    <select name="assessment">
+        <option>Quiz (MCQs)</option>
+        <option>Short answer questions</option>
+        <option>Mini project</option>
+    </select><br><br>
+
+    <button type="submit">Generate Assessment</button>
+</form>
+
+{% if assessment_output %}
+<hr>
+<h3>Your Personalized Assessment</h3>
+<pre>{{ assessment_output }}</pre>
+{% endif %}
