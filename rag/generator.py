@@ -81,3 +81,28 @@ Do NOT hallucinate exact URLs — just names and sources.
 """
 
     return run_llama(prompt)
+
+import subprocess
+import json
+
+def generate_reflection_feedback(reflection_text):
+    prompt = f"""
+You are a learning coach following heutagogical principles.
+
+Given the student's reflection below, provide:
+- Encouraging feedback
+- 2 reflective questions
+- 1 suggested next learning action
+
+Student reflection:
+{reflection_text}
+"""
+
+    result = subprocess.run(
+        ["ollama", "run", "llama3.1"],
+        input=prompt,
+        text=True,
+        capture_output=True
+    )
+
+    return result.stdout.strip()

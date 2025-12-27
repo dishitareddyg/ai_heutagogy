@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OS Knowledge Graph</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    h3 {
+      margin: 10px;
+    }
+
+    svg {
+      width: 100vw;
+      height: 80vh;
+      border: 1px solid #ddd;
+    }
+
+    text {
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+<h3>Select OS Topics in Any Order</h3>
+
+<svg id="graph"></svg>
+
+{{ nodes|json_script:"nodes-data" }}
+{{ links|json_script:"links-data" }}
+
+<script>
+/* =========================
+   LOAD DATA
+========================= */
+const nodes = JSON.parse(
+  document.getElementById("nodes-data").textContent
+);
+
+const links = JSON.parse(
+  document.getElementById("links-data").textContent
+);
+
+/* =========================
+   SVG SETUP
+========================= */
+const svg = d3.select("#graph");
+
+const width = svg.node().clientWidth;
+const height = svg.node().clientHeight;
+
+/* =========================
+   FORCE SIMULATION
+========================= */
+const independentNodes = nodes.filter(d => d.independent);
+
+const simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links)
+    .id(d => d.id)
+    .distance(130)
+  )
+  .force("charge", d3.forceManyBody()
+    .strength(d => d.independent ? -80 : -350)
+  )
+  .force("center", d3.forceCenter(width / 2, height / 2))
+  .force("x", d3.forceX(d =>
+    d.independent ? width * 0.8 : width / 2
+  ).strength(0.4))
+  .force("y", d3.forceY(d => {
+    if (d.independent) {
+      return 100 + independentNodes.indexOf(d) * 80;
+    }
+    return height / 2;
+  }).strength(0.4));
+
+/* =========================
+   LINKS
+========================= */
+const link = svg.append("g")
+  .attr("stroke", "#aaa")
+  .attr("stroke-dasharray", "5,5")
+  .selectAll("line")
+  .data(links)
+  .enter()
+  .append("line");
+
+/* =========================
+   NODES (GROUP)
+========================= */
+const node = svg.append("g")
+  .selectAll(".node")
+  .data(nodes)
+  .enter()
+  .append("g")
+  .attr("class", "node")
+  .call(
+    d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended)
+  );
+
+/* =========================
+   NODE CIRCLE
+========================= */
+node.append("circle")
+  .attr("r", 22)
+  .attr("fill", d => d.independent ? "green" : "orange");
+
+/* =========================
+   NODE LABEL
+========================= */
+node.append("text")
+  .text(d => d.id)
+  .attr("y", 38)
+  .attr("text-anchor", "middle")
+  .attr("font-size", "12px")
+  .attr("fill", "#333");
+
+/* =========================
+   TICK UPDATE
+========================= */
+simulation.on("tick", () => {
+  link
+    .attr("x1", d => d.source.x)
+    .attr("y1", d => d.source.y)
+    .attr("x2", d => d.target.x)
+    .attr("y2", d => d.target.y);
+
+  node
+    .attr("transform", d => `translate(${d.x}, ${d.y})`);
+});
+
+/* =========================
+   DRAG FUNCTIONS
+========================= */
+function dragstarted(event, d) {
+  if (!event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(event, d) {
+  d.fx = event.x;
+  d.fy = event.y;
+}
+
+function dragended(event, d) {
+  if (!event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+}
+</script>
+
+</body>
+</html>

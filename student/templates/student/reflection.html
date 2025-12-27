@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Learning Reflection Journal</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f8fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            min-height: 80px;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #1565c0;
+        }
+
+        .feedback-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #eef7ff;
+            border-left: 5px solid #1e88e5;
+            border-radius: 5px;
+        }
+
+        .reflection-note {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Reflection Journal</h1>
+    <p>
+        This space is for you to reflect on your learning journey.
+        There are no right or wrong answers.
+        Your responses are <strong>not stored</strong>.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>1. What did you learn today?</label>
+        <textarea name="learning" placeholder="Concepts, insights, realizations..." required></textarea>
+
+        <label>2. What was challenging or confusing?</label>
+        <textarea name="difficulty" placeholder="Ideas you struggled with or want to revisit"></textarea>
+
+        <label>3. How did you approach your learning?</label>
+        <textarea name="strategy" placeholder="Videos, reading, experimentation, discussion..."></textarea>
+
+        <label>4. How confident do you feel about this topic?</label>
+        <input type="text" name="confidence" placeholder="Low / Medium / High / Mixed">
+
+        <label>5. What would you like to explore next?</label>
+        <textarea name="next_steps" placeholder="New topics, deeper dives, practical applications"></textarea>
+
+        <button class="btn" type="submit">Get AI Feedback</button>
+    </form>
+
+    {% if ai_feedback %}
+        <div class="feedback-box">
+            <h2>AI Learning Coach Feedback</h2>
+            <pre style="white-space: pre-wrap;">{{ ai_feedback }}</pre>
+        </div>
+
+        <p class="reflection-note">
+            This feedback is generated instantly and is not saved anywhere.
+            You are free to reflect, revise, or ignore it.
+        </p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
