@@ -35,3 +35,50 @@ class CustomLoginView(LoginView):
             return '/teacher/dashboard/'
         return '/'
 '''
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect("accounts:dashboard")
+
+        messages.error(request, "Invalid credentials")
+
+    return render(request, "accounts/login.html")
+
+
+def register_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+        else:
+            User.objects.create_user(username=username, password=password)
+            messages.success(request, "Account created successfully")
+            return redirect("accounts:login")
+
+    return render(request, "accounts/signup.html")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("accounts:login")
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required(login_url="accounts:login")
+def dashboard(request):
+    return render(request, "accounts/dashboard.html")

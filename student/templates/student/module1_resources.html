@@ -1,0 +1,19 @@
+
+<h2>Explore Learning Resources</h2>
+
+<p>
+Below are curated resources to help you explore the topic further.
+You are free to choose what suits your learning style.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <button type="submit">Generate Resources</button>
+</form>
+
+{% if resources %}
+<hr>
+<h3>Recommended Resources</h3>
+<pre>{{ resources }}</pre>
+{% endif %}

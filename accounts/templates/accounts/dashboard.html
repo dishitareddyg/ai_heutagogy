@@ -1,0 +1,11 @@
+<h2>Student Dashboard</h2>
+
+<p>Welcome, {{ request.user.username }} 👋</p>
+
+<ul>
+  <li><a href="{% url 'student:module1' %}">Module 1: Learning Design</a></li>
+  <li><a href="{% url 'student:module1_assessment' %}">Assessments</a></li>
+  <li><a href="{% url 'student:module1_resources' %}">Resources</a></li>
+</ul>
+
+<a href="{% url 'accounts:logout' %}">Logout</a>

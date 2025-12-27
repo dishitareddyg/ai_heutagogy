@@ -53,3 +53,31 @@ If Mini project:
 End with reflection questions.
 """
     return run_llama(prompt)
+
+def generate_resources(topic, level):
+    prompt = f"""
+You are an AI learning curator following heutagogical principles.
+
+Learner details:
+- Topic: {topic}
+- Level: {level}
+
+Generate diverse learning resources with brief descriptions:
+
+1. BOOKS (2–3)
+   - Author + why it is useful
+
+2. ARTICLES / BLOGS (2–3)
+   - Prefer open-access or well-known sources
+
+3. RESEARCH PAPERS (1–2)
+   - Foundational or survey papers (mention year)
+
+4. YOUTUBE / OPEN VIDEOS (2–3)
+   - Reputable educational channels
+
+Focus on learner autonomy and exploration.
+Do NOT hallucinate exact URLs — just names and sources.
+"""
+
+    return run_llama(prompt)

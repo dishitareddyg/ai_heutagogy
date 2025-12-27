@@ -39,3 +39,21 @@ def module1_assessment_view(request):
         "student/module1_assessment.html",
         {"assessment_output": assessment_output}
     )
+
+from rag.generator import generate_resources
+
+def module1_resources_view(request):
+    resources = None
+    module1_data = request.session.get("module1_data")
+
+    if request.method == "POST" and module1_data:
+        resources = generate_resources(
+            topic=module1_data["topic"],
+            level=module1_data["level"]
+        )
+
+    return render(
+        request,
+        "student/module1_resources.html",
+        {"resources": resources}
+    )
