@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1-Minute Paper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        p.instructions {
+            background: #eef3ff;
+            padding: 15px;
+            border-left: 4px solid #4a6cf7;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 6px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: vertical;
+        }
+
+        .timer {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        button {
+            margin-top: 25px;
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3a57d6;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .feedback {
+            margin-top: 30px;
+            background: #f1f8f4;
+            padding: 20px;
+            border-left: 4px solid #2ecc71;
+        }
+    </style>
+
+    <script>
+        let timeLeft = 60;
+
+        function startTimer() {
+            const timerElement = document.getElementById("timer");
+            const interval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    timerElement.innerText = "Time's up! You can still submit 🙂";
+                } else {
+                    timerElement.innerText = "Time remaining: " + timeLeft + " seconds";
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        window.onload = startTimer;
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <h1>📝 1-Minute Paper</h1>
+
+    <p class="instructions">
+        Take one minute to reflect on what you just learned.
+        Answer honestly — this is for your learning, not grading.
+    </p>
+
+    <div id="timer" class="timer"></div>
+
+    <!-- ✅ USE URL NAME, NOT HARDCODED PATH -->
+    <form method="post" action="{% url 'student:one_minute_paper' %}">
+        {% csrf_token %}
+
+        <label>
+            1. What is the most important thing you learned?
+        </label>
+        <textarea
+            name="learned"
+            rows="4"
+            placeholder="Example: I understood how Round Robin scheduling works..."
+            required></textarea>
+
+        <label>
+            2. What concept is still unclear?
+        </label>
+        <textarea
+            name="question"
+            rows="3"
+            placeholder="Example: I am confused about context switching overhead..."
+            ></textarea>
+
+        <button type="submit">Submit Reflection</button>
+
+        <p class="note">
+            You’ll receive instant AI feedback after submission.
+        </p>
+    </form>
+
+    {% if feedback %}
+    <div class="feedback">
+        <h3>🤖 AI Feedback</h3>
+        <pre style="white-space: pre-wrap;">{{ feedback }}</pre>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>

@@ -106,3 +106,73 @@ Student reflection:
     )
 
     return result.stdout.strip()
+
+import subprocess
+
+
+# rag/generator.py
+
+import requests
+
+OLLAMA_URL = "http://localhost:11434/api/generate"
+MODEL = "llama3.1"
+
+def generate_one_minute_feedback(learned, question):
+    prompt = f"""
+You are an AI learning coach based on heutagogical principles.
+
+A student completed a One-Minute Paper.
+
+Most important thing learned:
+{learned}
+
+Remaining question or confusion:
+{question if question else "None mentioned"}
+
+Respond with:
+• Encouraging tone
+• Gentle clarification if needed
+• ONE self-directed next learning step
+• No grading, no judgment
+"""
+
+    payload = {
+        "model": MODEL,
+        "prompt": prompt,
+        "stream": False
+    }
+
+    response = requests.post(OLLAMA_URL, json=payload)
+    response.raise_for_status()
+
+    return response.json()["response"]
+# rag/generator.py
+import subprocess
+
+def generate_story_map_feedback(story_map):
+    prompt = f"""
+You are a learning coach following active learning and heutagogical principles.
+
+Given the student's story map below:
+- Give encouraging feedback
+- Point out 1 strong connection
+- Suggest 1 improvement
+- Ask 1 reflective question
+
+Story Map:
+Context: {story_map['context']}
+Actors: {story_map['actors']}
+Problem: {story_map['problem']}
+Events: {story_map['events']}
+Outcome: {story_map['outcome']}
+Reflection: {story_map['reflection']}
+"""
+
+    result = subprocess.run(
+        ["ollama", "run", "llama3.1"],
+        input=prompt,
+        text=True,
+        capture_output=True
+    )
+
+    return result.stdout.strip()

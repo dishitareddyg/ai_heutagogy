@@ -16,4 +16,8 @@ urlpatterns = [
     path("module1/resources/", module1_resources_view, name="module1_resources"),
     path("reflection/", views.reflection_view, name="reflection"),
     path("os/", os_graph, name="os_graph"),
+    path("one-minute-paper/", views.one_minute_paper, name="one_minute_paper"),
+    path("story-map/", views.story_map_page, name="story_map"),
+    path("story-map-feedback/", views.story_map_feedback, name="story_map_feedback")
+
 ]

@@ -121,3 +121,99 @@ def os_graph(request):
         "nodes": nodes,
         "links": links
     })
+
+
+from django.shortcuts import render
+from rag.generator import generate_one_minute_feedback
+
+def one_minute_paper(request):
+    feedback = None
+
+    if request.method == "POST":
+        learned = request.POST.get("learned", "").strip()
+        question = request.POST.get("question", "").strip()
+
+        if learned:
+            feedback = generate_one_minute_feedback(learned, question)
+
+    return render(
+        request,
+        "student/one_minute_paper.html",
+        {"feedback": feedback}
+    )
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+from rag.generator import generate_story_map_feedback
+
+
+@csrf_exempt
+def story_map_feedback(request):
+    # Allow only POST
+    if request.method != "POST":
+        return JsonResponse(
+            {"error": "Only POST method is allowed"},
+            status=405
+        )
+
+    try:
+        # Parse JSON body
+        data = json.loads(request.body.decode("utf-8"))
+
+        # Required fields for story mapping
+        required_fields = [
+            "context",
+            "actors",
+            "problem",
+            "events",
+            "outcome",
+            "reflection"
+        ]
+
+        # Check for missing fields
+        missing = [field for field in required_fields if field not in data]
+
+        if missing:
+            return JsonResponse(
+                {
+                    "error": "Missing required fields",
+                    "missing_fields": missing
+                },
+                status=400
+            )
+
+        # Generate AI feedback
+        feedback = generate_story_map_feedback(data)
+
+        return JsonResponse(
+            {
+                "success": True,
+                "feedback": feedback
+            },
+            status=200
+        )
+
+    except json.JSONDecodeError:
+        return JsonResponse(
+            {"error": "Invalid JSON format"},
+            status=400
+        )
+
+    except Exception as e:
+        return JsonResponse(
+            {
+                "error": "Internal server error",
+                "details": str(e)
+            },
+            status=500
+        )
+from django.shortcuts import render
+
+def story_map_page(request):
+    """
+    Renders the Story Mapping active learning activity page.
+    """
+    return render(request, "student/story_map.html")
