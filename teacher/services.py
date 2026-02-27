@@ -1,12 +1,16 @@
 
 """ from langchain_ollama import OllamaLLM """
-from langchain_groq import ChatGroq
 
 # Use mistral or llama3
 """ llm = OllamaLLM(model="llama3.1") """
+import os
+from langchain_groq import ChatGroq
+
+# Setup Cloud LLM
+api_key = os.getenv("GROQ_API_KEY", "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")
 llm = ChatGroq(
     temperature=0.7, 
-    groq_api_key="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", 
+    groq_api_key=api_key, 
     model_name="llama-3.3-70b-versatile"
 )
 
