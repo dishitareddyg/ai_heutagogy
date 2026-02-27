@@ -1,10 +1,14 @@
 
-
-
-from langchain_ollama import OllamaLLM
+""" from langchain_ollama import OllamaLLM """
+from langchain_groq import ChatGroq
 
 # Use mistral or llama3
-llm = OllamaLLM(model="llama3.1")
+""" llm = OllamaLLM(model="llama3.1") """
+llm = ChatGroq(
+    temperature=0.7, 
+    groq_api_key="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", 
+    model_name="llama-3.3-70b-versatile"
+)
 
 def generate_teacher_roadmap(outcomes, num_classes, duration, class_size):
     prompt = f"""

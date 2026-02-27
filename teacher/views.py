@@ -2,6 +2,8 @@
 from django.shortcuts import render
 import subprocess
 import json
+import markdown
+from django.utils.safestring import mark_safe
 
 from django.shortcuts import render
 import subprocess
@@ -69,7 +71,7 @@ def create_plan(request):
         course_outcomes=outcomes,
         roadmap=roadmap,
     )
-
+        
         return render(request, "teacher/roadmap.html", {
             "outcomes": outcomes,
             "roadmap": roadmap
@@ -96,3 +98,28 @@ def call_ollama(prompt):
 
 
 
+from django.shortcuts import render
+from django.contrib.auth.models import User
+from student.models import StudentProgress
+
+def student_progress_view(request):
+    students = User.objects.all()
+
+    progress_data = []
+
+    for student in students:
+        completed_topics = StudentProgress.objects.filter(
+            student=student,
+            completed=True
+        ).select_related("topic")
+
+        progress_data.append({
+            "student": student,
+            "topics": completed_topics
+        })
+
+    return render(
+        request,
+        "teacher/student_progress.html",
+        {"progress_data": progress_data}
+    )

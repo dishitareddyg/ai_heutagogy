@@ -1,14 +1,20 @@
+import os
+from langchain_groq import ChatGroq
 
-import subprocess
+# Setup Cloud LLM
+api_key = os.getenv("GROQ_API_KEY", "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")
+llm = ChatGroq(
+    temperature=0.7, 
+    groq_api_key=api_key, 
+    model_name="llama-3.3-70b-versatile"
+)
 
-def run_llama(prompt):
-    result = subprocess.run(
-        ["ollama", "run", "llama3.1"],
-        input=prompt,
-        capture_output=True,
-        text=True
-    )
-    return result.stdout
+def ask_ai(prompt):
+    """Replaces the old run_llama subprocess method"""
+    result = llm.invoke(prompt)
+    return result.content
+
+# 1. Generate Learning Path
 def generate_learning_path(topic, level, goal, style, output):
     prompt = f"""
 You are an AI co-creator using **heutagogical learning theory**.
@@ -26,7 +32,9 @@ Create a self-determined learning path with:
 - Capability development
 - Reflection questions
 """
-    return run_llama(prompt)
+    return ask_ai(prompt)
+
+# 2. Generate Assessment
 def generate_assessment(topic, level, goal, assessment):
     prompt = f"""
 You are an AI assessor following **heutagogy**.
@@ -52,8 +60,9 @@ If Mini project:
 
 End with reflection questions.
 """
-    return run_llama(prompt)
+    return ask_ai(prompt)
 
+# 3. Generate Resources
 def generate_resources(topic, level):
     prompt = f"""
 You are an AI learning curator following heutagogical principles.
@@ -79,12 +88,9 @@ Generate diverse learning resources with brief descriptions:
 Focus on learner autonomy and exploration.
 Do NOT hallucinate exact URLs — just names and sources.
 """
+    return ask_ai(prompt)
 
-    return run_llama(prompt)
-
-import subprocess
-import json
-
+# 4. Generate Reflection Feedback (FIXED to use ask_ai)
 def generate_reflection_feedback(reflection_text):
     prompt = f"""
 You are a learning coach following heutagogical principles.
@@ -97,26 +103,9 @@ Given the student's reflection below, provide:
 Student reflection:
 {reflection_text}
 """
+    return ask_ai(prompt)
 
-    result = subprocess.run(
-        ["ollama", "run", "llama3.1"],
-        input=prompt,
-        text=True,
-        capture_output=True
-    )
-
-    return result.stdout.strip()
-
-import subprocess
-
-
-# rag/generator.py
-
-import requests
-
-OLLAMA_URL = "http://localhost:11434/api/generate"
-MODEL = "llama3.1"
-
+# 5. Generate One Minute Feedback (FIXED to use ask_ai)
 def generate_one_minute_feedback(learned, question):
     prompt = f"""
 You are an AI learning coach based on heutagogical principles.
@@ -135,20 +124,9 @@ Respond with:
 • ONE self-directed next learning step
 • No grading, no judgment
 """
+    return ask_ai(prompt)
 
-    payload = {
-        "model": MODEL,
-        "prompt": prompt,
-        "stream": False
-    }
-
-    response = requests.post(OLLAMA_URL, json=payload)
-    response.raise_for_status()
-
-    return response.json()["response"]
-# rag/generator.py
-import subprocess
-
+# 6. Generate Story Map Feedback (FIXED to use ask_ai)
 def generate_story_map_feedback(story_map):
     prompt = f"""
 You are a learning coach following active learning and heutagogical principles.
@@ -167,12 +145,20 @@ Events: {story_map['events']}
 Outcome: {story_map['outcome']}
 Reflection: {story_map['reflection']}
 """
+    return ask_ai(prompt)
 
-    result = subprocess.run(
-        ["ollama", "run", "llama3.1"],
-        input=prompt,
-        text=True,
-        capture_output=True
-    )
+# 7. Generate Muddiest Point (FIXED to use ask_ai)
+def generate_muddiest_point_explanation(muddiest_point):
+    prompt = f"""
+You are an expert operating systems tutor.
 
-    return result.stdout.strip()
+A student has identified the following concept as their muddiest point:
+
+"{muddiest_point}"
+
+Explain this concept clearly in simple language.
+Use examples if helpful.
+Avoid jargon where possible.
+Keep the explanation concise and student-friendly.
+"""
+    return ask_ai(prompt)

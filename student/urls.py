@@ -18,6 +18,14 @@ urlpatterns = [
     path("os/", os_graph, name="os_graph"),
     path("one-minute-paper/", views.one_minute_paper, name="one_minute_paper"),
     path("story-map/", views.story_map_page, name="story_map"),
-    path("story-map-feedback/", views.story_map_feedback, name="story_map_feedback")
+    path("story-map-feedback/", views.story_map_feedback, name="story_map_feedback"),
+    path("learning-video/", views.learning_video, name="learning_video"),
+    path('progress/', views.student_progress, name='progress'),
+    path('complete/<int:topic_id>/', views.mark_topic_completed, name='mark_completed'),
+    path("muddiest-point/",views.muddiest_point_view,name="muddiest_point"),
+    path("assessment/", views.assessment, name="assessment"),
+    path("assessment/submit/", views.submit_assessment, name="submit_assessment"),
+    path("media/", views.media_library, name="media_library"),
 
+    
 ]

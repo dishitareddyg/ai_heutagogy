@@ -2,6 +2,7 @@
 from django.urls import path
 from . import views
 #from .views import teacher_roadmap
+#app_name="teacher"
 urlpatterns = [
     
     #path("roadmap/", teacher_roadmap, name="teacher-roadmap"),
@@ -11,4 +12,5 @@ urlpatterns = [
     #path("plan/", views.create_plan, name="teacher-plan"),
     path("plans/", views.view_plans, name="view-plans"),
     path("plans/<int:plan_id>/", views.plan_detail, name="plan-detail"),
+    path("student-progress/", views.student_progress_view, name="student_progress")
 ]

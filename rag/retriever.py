@@ -1,4 +1,4 @@
-from sentence_transformers import SentenceTransformer, util
+'''from sentence_transformers import SentenceTransformer, util
 from .loader import load_documents
 
 # Load embedding model ONCE
@@ -42,3 +42,4 @@ def retrieve_context(query, top_k=3):
     retrieved = [chunks[idx] for idx in top_results.indices]
 
     return "\n\n".join(retrieved)
+'''

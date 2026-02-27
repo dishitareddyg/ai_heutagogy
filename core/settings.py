@@ -129,3 +129,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/student/login/'
 LOGIN_REDIRECT_URL = '/student/dashboard/'
 LOGOUT_REDIRECT_URL = '/student/login/'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
